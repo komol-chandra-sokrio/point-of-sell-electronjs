@@ -1,4 +1,9 @@
 Lets Setup the project
+Start Backend
+npm run dev
+
+Start Frontend
+npm run start
 
     MongoDB
     sudo systemctl start mongod
@@ -15,7 +20,7 @@ Setup Server Config
     PORT=5000
 
 Now Setup Database in MongoDB Compass
-    
+
     Run :mongodb-compass in terminal
 
     DataBase Name       :hostal_management

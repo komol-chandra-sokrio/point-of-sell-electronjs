@@ -3,27 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 
-const ProductList = () => {
+const CustomerList = () => {
 	const [list, setList] = useState([]);
 	const [count, setCount] = useState(0);
 	const [edit, setEdit] = useState(false);
 	const [deleted, setDeleted] = useState(false);
 	const [deletedData, setDeletedData] = useState(null);
-	const [editData, setEditData] = useState(null);
-	const [id, setId] = useState('');
-	const [name, setName] = useState('');
-	const [purchasePrice, setPurchasePrice] = useState('');
-	const [sellPrice, setSellPrice] = useState('');
-	const [sku, setSku] = useState('');
-	const [description, setDescription] = useState('');
+	const [editDataItem, setEditFood] = useState(null);
+	const [itemId, setDataId] = useState('');
+	const [itemName, setDataName] = useState('');
+	const [itemPhone, setDataPhone] = useState('');
+	const [itemEmail, setDataEmail] = useState('');
+	const [itemAddress, setDataAddress] = useState('');
+	const [itemStatus, setDataStatus] = useState('');
 	// const [foodPrice, setFoodPrice] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 
-	const fetchDataList = async (count = 0) => {
+	const fetchCustomer = async (count = 0) => {
 		try {
 			setLoading(true);
-			const res = await axios.get(`http://localhost:5000/products?page=${count}`, {
+			const res = await axios.get(`http://localhost:5000/customers?page=${count}`, {
 				headers: {
 					token: JSON.parse(localStorage.getItem('token'))
 				}
@@ -32,24 +32,24 @@ const ProductList = () => {
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			setError('Failed to fetch data list');
+			setError('Failed to fetch food list');
 		}
 	};
 
 	useEffect(() => {
-		fetchDataList(count);
+		fetchCustomer(count);
 	}, [count, edit, deleted]);
 
 	// edit food handler
-	const editHandler = (obj) => {
+	const editHandler = (food) => {
 		setEdit(true);
-		setEditData(obj);
-		setId(obj.id);
-		setName(obj.name);
-		setPurchasePrice(obj.purchase_price);
-		setSellPrice(obj.sell_price);
-		setSku(obj.sku);
-		setDescription(obj.description);
+		setEditFood(food);
+		setDataId(food.id);
+		setDataName(food.full_name);
+		setDataPhone(food.phone);
+		setDataEmail(food.email);
+		setDataAddress(food.address);
+		setDataStatus(food.status);
 	};
 
 	const handleDelete = (food) => {
@@ -60,13 +60,13 @@ const ProductList = () => {
 	const EditFood = async () => {
 		setLoading(true);
 		try {
-			const res = await axios.put(`http://localhost:5000/products/${editData._id}`, {
-				id: id,
-				name: name,
-				purchase_price: purchasePrice,
-				sell_price: sellPrice,
-				sku: sku,
-				description: description
+			const res = await axios.put(`http://localhost:5000/customers/${editDataItem._id}`, {
+				id: itemId,
+				full_name: itemName,
+				phone: itemPhone,
+				email: itemEmail,
+				address: itemAddress,
+				status: itemStatus
 			});
 
 			if (res) {
@@ -102,7 +102,7 @@ const ProductList = () => {
 		<section className='container mx-auto px-4 sm:px-8 max-w-100'>
 			<div className='py-8'>
 				<div className='flex flex-row mb-1 sm:mb-0 justify-between w-full'>
-					<h2 className='text-xl font-bold'>Product List</h2>
+					<h2 className='text-xl font-bold'>Customer List</h2>
 					<div className='text-end'>
 						<form className='flex flex-col md:flex-row w-3/4 md:w-full max-w-sm md:space-x-3 space-y-3 md:space-y-0 justify-center'>
 							<div className=' relative '>
@@ -138,17 +138,22 @@ const ProductList = () => {
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										Purchase Price $
+										Phone
 									</th>
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										Sell Price $
+										Email
 									</th>
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										Created at
+										Address
+									</th>
+									<th
+										scope='col'
+										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
+										Status
 									</th>
 									<th
 										scope='col'
@@ -166,16 +171,20 @@ const ProductList = () => {
 											</div>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.name}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.full_name}</p>
+										</td>
+
+										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.phone}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.purchase_price}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.email}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.sell_price}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.address}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>13/12/22</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.status}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
 											<button
@@ -183,11 +192,11 @@ const ProductList = () => {
 												className='text-green-600 hover:text-green-900 mx-2'>
 												Edit
 											</button>
-											<button
+											{/* <button
 												onClick={() => handleDelete(data)}
 												className='text-red-600 hover:text-red-700 ml-6'>
 												Delete
-											</button>
+											</button> */}
 										</td>
 									</tr>
 								))}
@@ -245,11 +254,11 @@ const ProductList = () => {
 										ID :
 									</label>
 									<input
-										onChange={(e) => setId(e.target.value)}
+										onChange={(e) => setDataId(e.target.value)}
 										type='text'
 										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='Type the  item id'
-										defaultValue={editData.id}
+										placeholder='Type the item id'
+										defaultValue={editDataItem.id}
 									/>
 								</div>
 								<div className='relative my-4'>
@@ -257,60 +266,64 @@ const ProductList = () => {
 										Name :
 									</label>
 									<input
-										onChange={(e) => setName(e.target.value)}
+										onChange={(e) => setDataName(e.target.value)}
 										type='text'
 										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
 										placeholder=' name'
-										defaultValue={editData.name}
+										defaultValue={editDataItem.full_name}
 									/>
 								</div>
 								<div className='relative my-4'>
 									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										purchase price :
+										phone :
 									</label>
 									<input
-										onChange={(e) => setPurchasePrice(e.target.value)}
+										onChange={(e) => setDataPhone(e.target.value)}
 										type='text'
 										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder=' purchase price'
-										defaultValue={editData.purchase_price}
+										placeholder=' phone'
+										defaultValue={editDataItem.phone}
 									/>
 								</div>
 								<div className='relative my-4'>
 									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										sell_price :
+										email :
 									</label>
 									<input
-										onChange={(e) => setSellPrice(e.target.value)}
+										onChange={(e) => setDataEmail(e.target.value)}
 										type='text'
 										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='sell price'
-										defaultValue={editData.sell_price}
+										placeholder=' email'
+										defaultValue={editDataItem.email}
 									/>
 								</div>
 								<div className='relative my-4'>
 									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										sku :
+										address :
 									</label>
 									<input
-										onChange={(e) => setSku(e.target.value)}
+										onChange={(e) => setDataAddress(e.target.value)}
 										type='text'
 										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='sku'
-										defaultValue={editData.sku}
+										placeholder=' address'
+										defaultValue={editDataItem.address}
 									/>
 								</div>
-								<div className='relative my-4'>
-									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										description :
+								<div className='relative px-2 w-1/2'>
+									<label for='id' className='block text-md py-3 font-medium text-gray-700'>
+										Status :
 									</label>
-									<input
-										onChange={(e) => setDescription(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='description'
-										defaultValue={editData.description}
-									/>
+									<select
+										onChange={(e) => setDataStatus(e.target.value)}
+										className='flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
+										name='animals'
+										defaultValue={editDataItem.status}>
+										<option value='' disabled selected>
+											Select an option
+										</option>
+										<option value='active'>Active</option>
+										<option value='inActive'>InActive</option>
+									</select>
 								</div>
 
 								<button
@@ -347,4 +360,4 @@ const ProductList = () => {
 	);
 };
 
-export default ProductList;
+export default CustomerList;
