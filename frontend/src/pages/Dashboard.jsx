@@ -5,6 +5,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AddProduct from './AddProduct';
 import ProductList from './ProductList';
+import CustomerList from './CustomerList';
+import AddCustomer from './AddCustomer';
 import AddStudent from './AddStudent';
 import DistributionForm from './DistributionForm';
 import StudentList from './StudentList';
@@ -22,11 +24,8 @@ const Dashboard = () => {
 					<Route path='/' element={<DashboardHome />} />
 					<Route path='addproduct' element={<AddProduct />} />
 					<Route path='productlist' element={<ProductList />} />
-					<Route path='foodlist' element={<FoodList />} />
-					<Route path='addstudent' element={<AddStudent />} />
-					<Route path='studentlist' element={<StudentList />} />
-					<Route path='distributionform' element={<DistributionForm />} />
-					<Route path='accountinformation' element={<AccountInfo />} />
+					<Route path='addcustomer' element={<AddCustomer />} />
+					<Route path='customerlist' element={<CustomerList />} />
 				</Routes>
 			</main>
 			<Footer />

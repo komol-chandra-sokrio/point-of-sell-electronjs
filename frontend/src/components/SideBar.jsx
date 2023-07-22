@@ -37,35 +37,19 @@ const SideBar = () => {
 				</Link>
 				<Link
 					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
-					to='foodlist'>
+					to='addcustomer'>
 					<span className='text-left text-green-600'>
-						<GiFoodChain />
+						<MdFastfood />
 					</span>
-					<span className='mx-4 text-sm font-normal'>Food List</span>
+					<span className='mx-4 text-sm font-normal'>Add Customer</span>
 				</Link>
 				<Link
 					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
-					to='addstudent'>
+					to='customerlist'>
 					<span className='text-left text-green-600'>
-						<TiUserAdd />
+						<MdFastfood />
 					</span>
-					<span className='mx-4 text-sm font-normal'>Add Student</span>
-				</Link>
-				<Link
-					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
-					to='studentlist'>
-					<span className='text-left text-green-600'>
-						<FaUsers />
-					</span>
-					<span className='mx-4 text-sm font-normal'>Student List</span>
-				</Link>
-				<Link
-					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
-					to='distributionform'>
-					<span className='text-left text-green-600'>
-						<FaWpforms />
-					</span>
-					<span className='mx-4 text-sm font-normal'>Distribution Form</span>
+					<span className='mx-4 text-sm font-normal'>Customer List</span>
 				</Link>
 			</nav>
 			<button
