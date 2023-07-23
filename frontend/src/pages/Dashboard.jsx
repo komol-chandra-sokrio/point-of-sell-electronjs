@@ -7,12 +7,9 @@ import AddProduct from './AddProduct';
 import ProductList from './ProductList';
 import CustomerList from './CustomerList';
 import AddCustomer from './AddCustomer';
-import AddStudent from './AddStudent';
-import DistributionForm from './DistributionForm';
-import StudentList from './StudentList';
 import DashboardHome from './DashboardHome';
-import FoodList from './FoodList';
 import AccountInfo from './AccountInfo';
+import AddOrder from './AddOrder';
 
 const Dashboard = () => {
 	return (
@@ -22,10 +19,12 @@ const Dashboard = () => {
 			<main>
 				<Routes>
 					<Route path='/' element={<DashboardHome />} />
+					<Route path='accountinformation' element={<AccountInfo />} />
 					<Route path='addproduct' element={<AddProduct />} />
 					<Route path='productlist' element={<ProductList />} />
 					<Route path='addcustomer' element={<AddCustomer />} />
 					<Route path='customerlist' element={<CustomerList />} />
+					<Route path='addorder' element={<AddOrder />} />
 				</Routes>
 			</main>
 			<Footer />

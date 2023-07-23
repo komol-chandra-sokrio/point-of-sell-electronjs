@@ -1,0 +1,21 @@
+		
+E) Order
+	1.id(bigint)a
+	2.date(data)
+	3.invoice_id(string)a
+	4.note(text)
+	6.customer_name(string)
+	6.customer_phone(string)
+	6.grand_total(float)
+	9.created_at(datetime)
+
+	
+	
+F) Order Items    
+	1.id(bigint)
+	2.order_id(bigint)->order table primary key
+	3.product_id(bigint)->order table primary key
+	4.price(float)
+	6.qty(int)
+	6.sub_total(int)
+	9.created_at(datetime)
