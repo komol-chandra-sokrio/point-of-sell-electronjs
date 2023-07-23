@@ -21,6 +21,14 @@ const SideBar = () => {
 			<nav className='mt-6 px-6'>
 				<Link
 					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
+					to='accountinformation'>
+					<span className='text-left text-green-600'>
+						<MdFastfood />
+					</span>
+					<span className='mx-4 text-sm font-normal'>Account Info</span>
+				</Link>
+				<Link
+					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
 					to='addproduct'>
 					<span className='text-left text-green-600'>
 						<MdFastfood />
@@ -50,6 +58,14 @@ const SideBar = () => {
 						<MdFastfood />
 					</span>
 					<span className='mx-4 text-sm font-normal'>Customer List</span>
+				</Link>
+				<Link
+					className='hover:text-green-600 font-thin text-gray-500 dark:text-gray-400 hover:bg-green-200 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start'
+					to='addorder'>
+					<span className='text-left text-green-600'>
+						<MdFastfood />
+					</span>
+					<span className='mx-4 text-sm font-normal'>Create Order</span>
 				</Link>
 			</nav>
 			<button
