@@ -13,7 +13,7 @@ const AddProduct = () => {
 		id: id,
 		name: name,
 		purchase_price: purchasePrice,
-		sell_price: sellPrice,
+		price: sellPrice,
 		sku: sku,
 		description: description
 	};
