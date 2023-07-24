@@ -47,7 +47,7 @@ const ProductList = () => {
 		setId(obj.id);
 		setName(obj.name);
 		setPurchasePrice(obj.purchase_price);
-		setSellPrice(obj.sell_price);
+		setSellPrice(obj.price);
 		setSku(obj.sku);
 		setDescription(obj.description);
 	};
@@ -64,7 +64,7 @@ const ProductList = () => {
 				id: id,
 				name: name,
 				purchase_price: purchasePrice,
-				sell_price: sellPrice,
+				price: sellPrice,
 				sku: sku,
 				description: description
 			});
@@ -172,7 +172,7 @@ const ProductList = () => {
 											<p className='text-gray-900 whitespace-no-wrap'>{data.purchase_price}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.sell_price}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.price}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
 											<p className='text-gray-900 whitespace-no-wrap'>13/12/22</p>
@@ -278,14 +278,14 @@ const ProductList = () => {
 								</div>
 								<div className='relative my-4'>
 									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										sell_price :
+										sell price :
 									</label>
 									<input
 										onChange={(e) => setSellPrice(e.target.value)}
 										type='text'
 										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
 										placeholder='sell price'
-										defaultValue={editData.sell_price}
+										defaultValue={editData.price}
 									/>
 								</div>
 								<div className='relative my-4'>
