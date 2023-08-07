@@ -2,10 +2,25 @@ Lets Setup the project
 Start Backend
 npm run dev
 
-Start Frontend
-npm run start
+Setup & Install Process
 
-    MongoDB
+    #backend folder
+
+    npm install
+    npm run dev
+
+    #frontend folder
+
+    npm install
+    npm start
+
+    #db_backup folder
+
+    all backup collection is here
+
+Start Frontend
+
+    #MongoDB
     sudo systemctl start mongod
     sudo systemctl enable mongod
     sudo systemctl status mongod
