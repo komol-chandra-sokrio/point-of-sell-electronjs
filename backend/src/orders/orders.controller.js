@@ -3,13 +3,14 @@ const dataService = require('./orders.service');
 module.exports.store = async function (req, res) {
 	const data = req.body;
 	const create = await dataService.createRecord(data);
-	return res.status(200).json(create);
+	return res.json(create);
 };
 
 module.exports.index = async function (req, res) {
 	const PAGE_SIZE = 10;
 	const PAGE_NUMBER = parseInt(req.query.page || '0');
-	const list = await dataService.getList(PAGE_SIZE, PAGE_NUMBER);
+	const searchQuery = req.query.name || '';
+	const list = await dataService.getList(PAGE_SIZE, PAGE_NUMBER, searchQuery);
 	return res.json(list);
 };
 

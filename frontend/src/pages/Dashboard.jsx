@@ -10,6 +10,7 @@ import AddCustomer from './AddCustomer';
 import DashboardHome from './DashboardHome';
 import AccountInfo from './AccountInfo';
 import AddOrder from './AddOrder';
+import OrderList from './OrderList';
 
 const Dashboard = () => {
 	return (
@@ -25,6 +26,7 @@ const Dashboard = () => {
 					<Route path='addcustomer' element={<AddCustomer />} />
 					<Route path='customerlist' element={<CustomerList />} />
 					<Route path='addorder' element={<AddOrder />} />
+					<Route path='orderlist' element={<OrderList />} />
 				</Routes>
 			</main>
 			<Footer />

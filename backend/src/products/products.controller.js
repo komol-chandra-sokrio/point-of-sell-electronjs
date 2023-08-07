@@ -7,9 +7,15 @@ module.exports.createData = async function (req, res) {
 };
 
 module.exports.getList = async function (req, res) {
-	const PAGE_SIZE = 10;
+	const PAGE_SIZE = 5;
 	const PAGE_NUMBER = parseInt(req.query.page || '0');
-	const list = await dataService.getList(PAGE_SIZE, PAGE_NUMBER);
+	const searchQuery = req.query.name || '';
+	const list = await dataService.getList(PAGE_SIZE, PAGE_NUMBER, searchQuery);
+	return res.json(list);
+};
+
+module.exports.getProductList = async function (req, res) {
+	const list = await dataService.getProductList();
 	return res.json(list);
 };
 

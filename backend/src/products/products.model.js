@@ -14,11 +14,11 @@ const productSchema = new Schema(
 		},
 
 		purchase_price: {
-			type: String,
+			type: Number,
 			required: true
 		},
-		sell_price: {
-			type: String,
+		price: {
+			type: Number,
 			required: true
 		},
 		sku: {

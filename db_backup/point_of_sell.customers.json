@@ -1,0 +1,102 @@
+[{
+  "_id": {
+    "$oid": "64b58d4bb49ee1a02cc1dc2f"
+  },
+  "id": "1",
+  "full_name": "Customer 1",
+  "phone": "01874303467",
+  "email": "customer@gmail.com",
+  "address": "MIrpur 2",
+  "status": "active",
+  "createdAt": {
+    "$date": "2023-07-17T18:49:47.693Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-22T20:00:12.770Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b592c014730879072ada5f"
+  },
+  "id": "2",
+  "full_name": "Customer 2",
+  "phone": "21323435454",
+  "email": "customer2@gamil.com",
+  "address": "fsdfsdfsdfsdfsdf",
+  "status": "active",
+  "createdAt": {
+    "$date": "2023-07-17T19:13:04.265Z"
+  },
+  "updatedAt": {
+    "$date": "2023-08-07T01:46:03.253Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64d04bb9a676f29892cd950d"
+  },
+  "id": "3",
+  "full_name": "customer 3",
+  "phone": "01875639426",
+  "email": "email@gmail.com",
+  "address": "Mirpur",
+  "status": "active",
+  "createdAt": {
+    "$date": "2023-08-07T01:41:13.372Z"
+  },
+  "updatedAt": {
+    "$date": "2023-08-07T01:46:10.680Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64d04cfe5746a47fc2fc1dcc"
+  },
+  "id": "5",
+  "full_name": "dddddddddddd",
+  "phone": "018746983567",
+  "email": "email@gmail.com",
+  "address": "Mirpur 1 , Dhaka , Bangladesh",
+  "status": "active",
+  "createdAt": {
+    "$date": "2023-08-07T01:46:38.653Z"
+  },
+  "updatedAt": {
+    "$date": "2023-08-07T01:46:38.653Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64d04d405746a47fc2fc1dd0"
+  },
+  "id": "6",
+  "full_name": "44444444",
+  "phone": "222222222222",
+  "email": "dfdf@gfgdfg,vyuiy",
+  "address": "Mirpur 1 , Dhaka , Bangladesh",
+  "status": "active",
+  "createdAt": {
+    "$date": "2023-08-07T01:47:44.033Z"
+  },
+  "updatedAt": {
+    "$date": "2023-08-07T01:47:44.033Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64d04e275746a47fc2fc1df2"
+  },
+  "id": "#88",
+  "full_name": "jjjjjjjjjjjjjjj",
+  "phone": "+8801874303467",
+  "email": "komol@gmail.com",
+  "address": "Mirpur 1 , Dhaka , Bangladesh",
+  "status": "active",
+  "createdAt": {
+    "$date": "2023-08-07T01:51:35.176Z"
+  },
+  "updatedAt": {
+    "$date": "2023-08-07T01:51:35.176Z"
+  }
+}]

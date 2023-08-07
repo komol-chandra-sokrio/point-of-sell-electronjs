@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 
-const ProductList = () => {
+const OrderList = () => {
 	//list
 	const [notfound, setnotfound] = useState(false);
 	const [search, setSearch] = useState(false);
@@ -16,13 +16,6 @@ const ProductList = () => {
 	const [deleted, setDeleted] = useState(false);
 	const [deletedData, setDeletedData] = useState(null);
 	const [editData, setEditData] = useState(null);
-	const [id, setId] = useState('');
-	const [name, setName] = useState('');
-	const [purchasePrice, setPurchasePrice] = useState('');
-	const [sellPrice, setSellPrice] = useState('');
-	const [sku, setSku] = useState('');
-	const [description, setDescription] = useState('');
-	// const [foodPrice, setFoodPrice] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 
@@ -31,7 +24,7 @@ const ProductList = () => {
 			setnotfound(false);
 			setSearch(false);
 			// setLoading(true);
-			const res = await axios.get(`http://localhost:5000/products?page=${count}`, {
+			const res = await axios.get(`http://localhost:5000/orders?page=${count}`, {
 				headers: {
 					token: JSON.parse(localStorage.getItem('token'))
 				}
@@ -57,14 +50,11 @@ const ProductList = () => {
 		setnotfound(false);
 		setSearch(false);
 		try {
-			const res = await axios.get(
-				`http://localhost:5000/products?name=${searchtext}&page=${count}`,
-				{
-					headers: {
-						token: JSON.parse(localStorage.getItem('token'))
-					}
+			const res = await axios.get(`http://localhost:5000/orders?name=${searchtext}&page=${count}`, {
+				headers: {
+					token: JSON.parse(localStorage.getItem('token'))
 				}
-			);
+			});
 			if (res.data.list.length === 0) {
 				setnotfound(true);
 			} else {
@@ -86,41 +76,11 @@ const ProductList = () => {
 	const editHandler = (obj) => {
 		setEdit(true);
 		setEditData(obj);
-		setId(obj.id);
-		setName(obj.name);
-		setPurchasePrice(obj.purchase_price);
-		setSellPrice(obj.price);
-		setSku(obj.sku);
-		setDescription(obj.description);
 	};
-
 	const handleDelete = (food) => {
 		setDeletedData(food);
 		setDeleted(true);
 	};
-
-	const EditFood = async () => {
-		setLoading(true);
-		try {
-			const res = await axios.put(`http://localhost:5000/products/${editData._id}`, {
-				id: id,
-				name: name,
-				purchase_price: purchasePrice,
-				price: sellPrice,
-				sku: sku,
-				description: description
-			});
-
-			if (res) {
-				setLoading(false);
-				setEdit(false);
-			}
-		} catch (err) {
-			setLoading(false);
-			setError('Failed to edit product');
-		}
-	};
-
 	const DeleteFood = async () => {
 		setLoading(true);
 		try {
@@ -136,7 +96,6 @@ const ProductList = () => {
 			setError('Failed to delete product');
 		}
 	};
-
 	if (loading) {
 		return 'Loading...';
 	}
@@ -144,7 +103,7 @@ const ProductList = () => {
 		<section className='container mx-auto px-4 sm:px-8 max-w-100'>
 			<div className='py-8'>
 				<div className='flex flex-row mb-1 sm:mb-0 justify-between w-full'>
-					<h2 className='text-xl font-bold'>Product List</h2>
+					<h2 className='text-xl font-bold'>Order Report</h2>
 					<div className='text-end'>
 						<div className='flex flex-col md:flex-row w-3/4 md:w-full max-w-sm md:space-x-3 space-y-3 md:space-y-0 justify-center'>
 							<div className=' relative '>
@@ -152,7 +111,7 @@ const ProductList = () => {
 									onChange={(e) => setsearchText(e.target.value)}
 									type='text'
 									className='flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-									placeholder='search by name'
+									placeholder='invoice id'
 									value={searchtext}
 								/>
 							</div>
@@ -180,22 +139,22 @@ const ProductList = () => {
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										ID
+										invoiceId
 									</th>
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										Name
+										date
 									</th>
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										Purchase Price $
+										grandTotal $
 									</th>
 									<th
 										scope='col'
 										className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
-										Sell Price $
+										Items $
 									</th>
 									<th
 										scope='col'
@@ -206,32 +165,29 @@ const ProductList = () => {
 							</thead>
 							<tbody>
 								{list.map((data, index) => (
-									<tr key={data.id}>
+									<tr key={data._id}>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
 											<div className='flex items-center'>
-												<p className='text-gray-900 whitespace-no-wrap'>{data.id}</p>
+												<p className='text-gray-900 whitespace-no-wrap'>{data.invoiceId}</p>
 											</div>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.name}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>
+												{new Date(data.date).toLocaleString()}
+											</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.purchase_price}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.grandTotal}</p>
 										</td>
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-											<p className='text-gray-900 whitespace-no-wrap'>{data.price}</p>
+											<p className='text-gray-900 whitespace-no-wrap'>{data.products.length}</p>
 										</td>
 
 										<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
 											<button
 												onClick={() => editHandler(data)}
 												className='text-green-600 hover:text-green-900 mx-2'>
-												Edit
-											</button>
-											<button
-												onClick={() => handleDelete(data)}
-												className='text-red-600 hover:text-red-700 ml-6'>
-												Delete
+												View Order
 											</button>
 										</td>
 									</tr>
@@ -258,85 +214,115 @@ const ProductList = () => {
 										<IoMdClose className='text-right text-xl' />
 									</button>
 								</div>
-								<div className='relative my-2'>
-									<label for='id' className='block text-md py-3 font-medium text-gray-700'>
-										ID :
-									</label>
-									<input
-										onChange={(e) => setId(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='Type the  item id'
-										defaultValue={editData.id}
-									/>
-								</div>
+
+								{/* Customer TABLE */}
+
 								<div className='relative my-4'>
-									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										Name :
-									</label>
-									<input
-										onChange={(e) => setName(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder=' name'
-										defaultValue={editData.name}
-									/>
-								</div>
-								<div className='relative my-4'>
-									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										purchase price :
-									</label>
-									<input
-										onChange={(e) => setPurchasePrice(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder=' purchase price'
-										defaultValue={editData.purchase_price}
-									/>
-								</div>
-								<div className='relative my-4'>
-									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										sell price :
-									</label>
-									<input
-										onChange={(e) => setSellPrice(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='sell price'
-										defaultValue={editData.price}
-									/>
-								</div>
-								<div className='relative my-4'>
-									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										sku :
-									</label>
-									<input
-										onChange={(e) => setSku(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='sku'
-										defaultValue={editData.sku}
-									/>
-								</div>
-								<div className='relative my-4'>
-									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
-										description :
-									</label>
-									<input
-										onChange={(e) => setDescription(e.target.value)}
-										type='text'
-										className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-										placeholder='description'
-										defaultValue={editData.description}
-									/>
+									<table className='min-w-full leading-normal'>
+										<tbody>
+											<tr>
+												<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+													<h6>Customer Info</h6>
+													<p className='text-gray-900 whitespace-no-wrap'>
+														Name: <span>{editData.customerInfo.full_name}</span>
+													</p>
+													<p className='text-gray-900 whitespace-no-wrap'>
+														Phone: <span>{editData.customerInfo.phone}</span>
+													</p>
+													<p className='text-gray-900 whitespace-no-wrap'>
+														Address:<span>{editData.customerInfo.address}</span>
+													</p>
+												</td>
+												<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+													<h6>Order Info</h6>
+													<p className='text-gray-900 whitespace-no-wrap'>
+														Invoice Id: <span>{editData.invoiceId}</span>
+													</p>
+													<p className='text-gray-900 whitespace-no-wrap'>
+														Product Items: <span>{editData.products.length}</span>
+													</p>
+													<p className='text-gray-900 whitespace-no-wrap'>
+														Date:<span>{new Date(editData.date).toLocaleString()}</span>
+													</p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 
-								<button
-									onClick={() => EditFood()}
-									type='button'
-									className=' my-4 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 '>
-									{loading ? 'Loading' : 'Save'}
-								</button>
+								{/* PRODUCTS TABLE */}
+								<div className='relative my-4'>
+									<label for='name' className='block text-md py-3 font-medium text-gray-700'>
+										Products :
+									</label>
+
+									<table className='min-w-full leading-normal'>
+										<thead>
+											<tr>
+												<th
+													scope='col'
+													className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
+													Name
+												</th>
+
+												<th
+													scope='col'
+													className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
+													Price $
+												</th>
+												<th
+													scope='col'
+													className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
+													Quantity
+												</th>
+												<th
+													scope='col'
+													className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'>
+													Sub Total $
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{editData.products.length > 0 &&
+												editData.products.map((data, index) => (
+													<tr key={data._id}>
+														<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+															<p className='text-gray-900 whitespace-no-wrap'>{data.name}</p>
+														</td>
+														<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+															<p className='text-gray-900 whitespace-no-wrap'>{data.price}</p>
+														</td>
+														<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+															<p className='text-gray-900 whitespace-no-wrap'>{data.quantity}</p>
+														</td>
+														<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+															<p className='text-gray-900 whitespace-no-wrap text-end'>
+																{data.quantity * data.price}
+															</p>
+														</td>
+													</tr>
+												))}
+										</tbody>
+									</table>
+								</div>
+								{/* Order TABLE */}
+
+								<div className='relative my-4'>
+									<table className='min-w-full leading-normal'>
+										<tbody>
+											<tr>
+												<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+													<p className='text-gray-900 whitespace-no-wrap'>{editData.note}</p>
+												</td>
+												<td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+													<p className='text-gray-900 whitespace-no-wrap text-end'>
+														Grand Total:<span>{editData.grandTotal}</span>
+													</p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						)}
 					</div>
@@ -365,4 +351,4 @@ const ProductList = () => {
 	);
 };
 
-export default ProductList;
+export default OrderList;
