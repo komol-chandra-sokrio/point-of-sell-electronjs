@@ -1,6 +1,4 @@
 Lets Setup the project
-Start Backend
-npm run dev
 
 Setup & Install Process
 
@@ -41,3 +39,8 @@ Now Setup Database in MongoDB Compass
     DataBase Name       :point_of_sell
     Collection          :point_of_sell
     Connection Stining  :mongodb://localhost:27017
+
+Now Login
+
+    user            :admin@gmail.com
+    pass            :12345678
