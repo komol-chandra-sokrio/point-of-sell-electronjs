@@ -10,6 +10,10 @@ router.get('/', function (req, res) {
 });
 
 //product routes
+router.get('/product-list', productController.getProductList);
+router.get('/customer-list', customerController.getCustomerList);
+router.get('/report-data', customerController.getReportData);
+
 router.post('/products', productController.createData);
 router.get('/products', productController.getList);
 router.get('/products/:id', productController.getById);
@@ -17,6 +21,7 @@ router.put('/products/:id', productController.updateById);
 router.delete('/products/:id', productController.deleteById);
 
 //product routes
+
 router.post('/customers', customerController.store);
 router.get('/customers', customerController.index);
 router.get('/customers/:id', customerController.find);
@@ -24,7 +29,7 @@ router.put('/customers/:id', customerController.update);
 router.delete('/customers/:id', customerController.destroy);
 
 //order routes
-router.post('/orders', orderController.store);
+router.post('/orders/create', orderController.store);
 router.get('/orders', orderController.index);
 router.get('/orders/:id', orderController.find);
 router.put('/orders/:id', orderController.update);

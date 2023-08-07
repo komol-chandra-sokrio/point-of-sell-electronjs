@@ -30,6 +30,7 @@ const AddCustomer = () => {
 					token: JSON.parse(localStorage.getItem('token'))
 				}
 			});
+			console.log(res);
 			if (res) {
 				setLoading(false);
 				setID('');
@@ -90,7 +91,7 @@ const AddCustomer = () => {
 							onChange={(e) => setEmail(e.target.value)}
 							type='text'
 							className=' flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-							placeholder=' age'
+							placeholder=' email'
 						/>
 					</div>
 					<div className='relative px-2 w-1/2'>

@@ -14,15 +14,15 @@ Setup Server Config
 
     .env file
 
-    APP_NAME=Hostal
-    DB_URI=mongodb://localhost:27017/hostal_management
-    JWT_SECRET=hostal
+    APP_NAME=PointOfSell
+    DB_URI=mongodb://localhost:27017/point_of_sell
+    JWT_SECRET=point_of_sell
     PORT=5000
 
 Now Setup Database in MongoDB Compass
 
     Run :mongodb-compass in terminal
 
-    DataBase Name       :hostal_management
-    Collection          :hostal_management
+    DataBase Name       :point_of_sell
+    Collection          :point_of_sell
     Connection Stining  :mongodb://localhost:27017

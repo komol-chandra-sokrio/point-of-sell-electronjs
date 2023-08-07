@@ -1,4 +1,6 @@
 const Customer = require('./customers.model');
+const Product = require('../products/products.model');
+const Order = require('../orders/orders.model');
 
 module.exports.createRecord = async function (data) {
 	return Customer.create(data);
@@ -14,6 +16,25 @@ module.exports.getList = async function (PAGE_SIZE, PAGE_NUMBER) {
 		list: customers
 	};
 };
+
+module.exports.getReportData = async function () {
+	const products = await Product.countDocuments({});
+	const orders = await Order.countDocuments({});
+	const customers = await Customer.countDocuments({});
+	return {
+		products: products,
+		customers: customers,
+		orders: orders
+	};
+};
+
+module.exports.getCustomerList = async function () {
+	const customers = await Customer.find({});
+	return {
+		customers: customers
+	};
+};
+
 module.exports.getById = async function (studentId) {
 	return Customer.findById(studentId);
 };

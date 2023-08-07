@@ -5,65 +5,66 @@ const AddOrder = () => {
 	const [users, setUsers] = useState([]);
 	const [selectedUser, setSelectedUser] = useState('');
 	const [userDetails, setUserDetails] = useState(null);
+	const [userInfo, setUserInfo] = useState(null);
 
 	const [cartItems, setCartItems] = useState([]);
 	const [list, setList] = useState([]);
 
 	// const [products, setProducts] = useState([]);
 
-	const [currentDate, setCurrentDate] = useState('');
 	const [note, setNote] = useState('');
 	const [loading, setLoading] = useState(false);
 
 	const handleSubmitOrder = async () => {
 		// Prepare the data for the POST request
 		const orderData = {
-			invoiceId,
-			date: currentDate,
 			customerId: selectedUser,
+			customerInfo: userInfo,
 			note,
 			products: cartItems, // Assuming you have a state variable named "cartItems" that contains the selected products
 			grandTotal: calculateGrandTotal()
 		};
 
+		// console.log(orderData);
 		try {
-			// setLoading(true);
-			// const response = await fetch('/api/orders', {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	body: JSON.stringify(orderData)
-			// });
-			// setLoading(false);
+			setLoading(true);
+			const res = await axios({
+				method: 'post',
+				url: `http://localhost:5000/orders/create`,
+				data: orderData,
+				headers: {
+					token: JSON.parse(localStorage.getItem('token'))
+				}
+			});
+
+			if (res) {
+				console.log(res);
+				setSelectedUser('');
+				setUserDetails('');
+				setUserInfo('');
+				setCartItems([]);
+				setNote('');
+				setLoading(false);
+			}
 			// Clear the cart and any other required state variables after successful order submission
 		} catch (error) {
+			console.log(error);
 			console.error('Error submitting order:', error);
 			setLoading(false);
 		}
 	};
 
-	// const [products, setProducts] = useState([
-	// 	{ id: 1, name: 'Product 1', quantity: 2, price: 20.0 },
-	// 	{ id: 2, name: 'Product 2', quantity: 1, price: 15.0 }
-	// 	// Add more products as needed
-	// ]);
-
 	const fetchProducts = async () => {
 		try {
-			setLoading(true);
-			const res = await axios.get(`http://localhost:5000/customer-list`, {
+			const res = await axios.get(`http://localhost:5000/product-list`, {
 				headers: {
 					token: JSON.parse(localStorage.getItem('token'))
 				}
 			});
 			setList(res.data.products);
+			console.log(res.data.products);
 		} catch (error) {}
 	};
-
-	useEffect(() => {
-		fetchProducts();
-	});
 
 	const fetchUsers = async () => {
 		try {
@@ -80,6 +81,7 @@ const AddOrder = () => {
 
 	useEffect(() => {
 		fetchUsers();
+		fetchProducts();
 	}, []);
 
 	// Basic Functions Start
@@ -97,12 +99,12 @@ const AddOrder = () => {
 	};
 
 	const calculateSubtotal = (quantity, price) => {
-		return (quantity * price).toFixed(2);
+		return quantity * price;
 	};
 
 	const calculateGrandTotal = () => {
 		const total = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
-		return total.toFixed(2);
+		return total;
 	};
 
 	const handleRemoveItem = (index) => {
@@ -110,31 +112,19 @@ const AddOrder = () => {
 		updatedCartItems.splice(index, 1);
 		setCartItems(updatedCartItems);
 	};
-	const generateInvoiceId = () => {
-		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		let result = '';
-		const charactersLength = characters.length;
-		for (let i = 0; i < 12; i++) {
-			result += characters.charAt(Math.floor(Math.random() * charactersLength));
-		}
-		return result;
-	};
-	const [invoiceId, setInvoiceId] = useState(generateInvoiceId());
+
 	// Basic Functions End
 
 	useEffect(() => {
 		if (selectedUser) {
-			const user = users.find((user) => user.id === selectedUser);
-			setUserDetails(user);
+			const user = users.find((user) => user._id === selectedUser);
+			setUserDetails(user._id);
+			setUserInfo(user);
 		} else {
 			setUserDetails(null);
+			setUserInfo(null);
 		}
 	}, [selectedUser, users]);
-
-	useEffect(() => {
-		const today = new Date();
-		setCurrentDate(today.toISOString().slice(0, 10));
-	}, []);
 
 	return (
 		<div className='container mx-auto py-8'>
@@ -151,32 +141,33 @@ const AddOrder = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{list}
-								{list.map((product) => (
-									<tr key={product.id}>
-										<td className='border px-4 py-2'>{product.name}</td>
-										<td className='border px-4 py-2'>${product.price.toFixed(2)}</td>
+								{list.length > 0 &&
+									list.map((product) => (
+										<tr key={product.id}>
+											<td className='border px-4 py-2'>{product.name}</td>
+											<td className='border px-4 py-2'>${product.price}</td>
 
-										<td className='border px-4 py-2'>
-											<button
-												className={`bg-blue-500 text-white py-2 px-4 rounded ${
-													cartItems.find((item) => item.id === product.id)
-														? 'opacity-50 pointer-events-none'
-														: ''
-												}`}
-												disabled={cartItems.find((item) => item.id === product.id)}
-												onClick={() => handleAddToCart(product)}>
-												Add
-											</button>
-										</td>
-									</tr>
-								))}
+											<td className='border px-4 py-2'>
+												<button
+													className={`bg-blue-500 text-white py-2 px-4 rounded ${
+														cartItems.find((item) => item.id === product.id)
+															? 'opacity-50 pointer-events-none'
+															: ''
+													}`}
+													disabled={cartItems.find((item) => item.id === product.id)}
+													onClick={() => handleAddToCart(product)}>
+													Add
+												</button>
+											</td>
+										</tr>
+									))}
 							</tbody>
 						</table>
 					</div>
 				</div>
 
 				{/* Cart */}
+
 				<div className='w-3/5 bg-gray-100 p-4 rounded shadow'>
 					<h3 className='text-lg font-semibold mb-2'>Cart Added Products</h3>
 					<table className='w-full table-auto mb-4'>
@@ -190,58 +181,33 @@ const AddOrder = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{cartItems.map((item, index) => (
-								<tr key={index}>
-									<td className='border px-4 py-2'>{item.name}</td>
-									<td className='border px-4 py-2'>${item.price.toFixed(2)}</td>
-									<td className='border px-4 py-2'>
-										<input
-											className='w-16'
-											type='number'
-											value={item.quantity}
-											onChange={(e) => handleQtyChange(index, e.target.value)}
-										/>
-									</td>
-									<td className='border px-4 py-2'>
-										${calculateSubtotal(item.quantity, item.price)}
-									</td>
-									<td className='border px-4 py-2'>
-										<button
-											className='px-2 py-1 bg-red-500 text-white rounded'
-											onClick={() => handleRemoveItem(index)}>
-											Remove
-										</button>
-									</td>
-								</tr>
-							))}
+							{cartItems.length > 0 &&
+								cartItems.map((item, index) => (
+									<tr key={index}>
+										<td className='border px-4 py-2'>{item.name}</td>
+										<td className='border px-4 py-2'>${item.price}</td>
+										<td className='border px-4 py-2'>
+											<input
+												className='w-16'
+												type='number'
+												value={item.quantity}
+												onChange={(e) => handleQtyChange(index, e.target.value)}
+											/>
+										</td>
+										<td className='border px-4 py-2'>
+											${calculateSubtotal(item.quantity, item.price)}
+										</td>
+										<td className='border px-4 py-2'>
+											<button
+												className='px-2 py-1 bg-red-500 text-white rounded'
+												onClick={() => handleRemoveItem(index)}>
+												Remove
+											</button>
+										</td>
+									</tr>
+								))}
 						</tbody>
 					</table>
-					<div className='flex justify-between'>
-						<div className='relative px-2 '>
-							<label htmlFor='id' className='block text-md py-3 font-medium text-gray-700'>
-								Date:
-							</label>
-							<input
-								type='date'
-								value={currentDate}
-								onChange={(e) => setCurrentDate(e.target.value)}
-								className='flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-								placeholder='Set Date'
-							/>
-						</div>
-						<div className='relative px-2 '>
-							<label htmlFor='invoiceId' className='block text-md py-3 font-medium text-gray-700'>
-								Invoice ID:
-							</label>
-							<input
-								type='text'
-								value={invoiceId}
-								onChange={(e) => setInvoiceId(e.target.value)}
-								className='flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-								placeholder='Invoice ID'
-							/>
-						</div>
-					</div>
 
 					<div className='relative px-2'>
 						<label htmlFor='note' className='block text-md py-3 font-medium text-gray-700'>
@@ -268,31 +234,31 @@ const AddOrder = () => {
 								Select a user
 							</option>
 							{users.map((user) => (
-								<option key={user.id} value={user.id}>
+								<option key={user._id} value={user._id}>
 									{user.full_name}
 								</option>
 							))}
 						</select>
 					</div>
 					<div className='px-4 py-4 '>
-						{userDetails && (
+						{userInfo && (
 							<div>
 								<div className='flex justify-between'>
 									<span className='font-semibold'>User Name:</span>
-									<span>{userDetails.full_name}</span>
+									<span>{userInfo.full_name}</span>
 								</div>
 
 								<div className='flex justify-between'>
 									<span className='font-semibold'>Address:</span>
-									<span>{userDetails.address}</span>
+									<span>{userInfo.address}</span>
 								</div>
 								<div className='flex justify-between'>
 									<span className='font-semibold'>Phone:</span>
-									<span>{userDetails.phone}</span>
+									<span>{userInfo.phone}</span>
 								</div>
 								<div className='flex justify-between'>
 									<span className='font-semibold'>Email:</span>
-									<span>{userDetails.email}</span>
+									<span>{userInfo.email}</span>
 								</div>
 							</div>
 						)}
@@ -300,10 +266,10 @@ const AddOrder = () => {
 							<span className='font-semibold'>Grand Total:</span>
 							<span>${calculateGrandTotal()}</span>
 						</div>
+
 						<button
-							onClick={handleSubmitOrder}
-							disabled={!selectedUser || cartItems.length === 0 || loading}
-							className='my-4 py-2 px-4 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2'>
+							onClick={() => handleSubmitOrder()}
+							className=' my-4 py-2 px-4 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2'>
 							{loading ? 'Loading...' : 'Submit Order'}
 						</button>
 					</div>
